@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json());
 
-const courses = [
+let courses = [
   { id: 1, title: "reactjs course", price: 650 },
   { id: 2, title: "mongo course", price: 350 },
   { id: 3, title: "nodejs course", price: 550 },
@@ -53,14 +53,31 @@ app.post(
 
 app.patch("/api/courses/:id", (req, res) => {
   const id = +req.params.id;
-  const course = courses.find((c) => c.id === id);
+  let course = courses.find((c) => c.id === id);
   if (course) {
     course = { ...course, ...req.body };
+    res.status(200).json(course);
   } else {
-    return res.status(404).send({
+    return res.status(404).json({
       message: "not found",
     });
   }
+});
+
+app.delete("/api/courses/:id", (req, res) => {
+  const id = +req.params.id;
+  const course = courses.find((c) => c.id === id);
+  if (!course) {
+    return res.status(404).json({
+      message: "not found",
+    });
+  }
+  courses = courses.filter((el) => {
+    return el.id !== id;
+  });
+  res.status(200).json({
+    message: "deleted successfully",
+  });
 });
 
 app.listen(5000, () => {
