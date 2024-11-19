@@ -15,7 +15,12 @@ app.get("/api/courses", (req, res) => {
 app.get("/api/courses/:id", (req, res) => {
   const id = +req.params.id;
   const course = courses.find((course) => course.id === id);
-  res.json(course);
+  if (!course) {
+    return res.status(404).json({
+      message: "no courses found",
+    });
+  }
+  res.status(200).json(course);
 });
 
 app.listen(5000, () => {
