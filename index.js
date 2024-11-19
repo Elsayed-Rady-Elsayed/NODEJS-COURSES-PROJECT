@@ -1,5 +1,7 @@
 const express = require("express");
 
+const { body, validationResult } = require("express-validator");
+
 const app = express();
 
 app.use(express.json());
@@ -25,16 +27,20 @@ app.get("/api/courses/:id", (req, res) => {
   res.status(200).json(course);
 });
 
-app.post("/api/courses", (req, res) => {
-  const course = { id: courses.length + 1, ...req.body };
-  if (!course.title && !course.price) {
-    return res.status(400).json({
-      message: "title and price are required",
-    });
+app.post(
+  "/api/courses",
+  body("title")
+    .notEmpty()
+    .withMessage("enter valid title")
+    .isLength({ min: 5 })
+    .withMessage("enter title with more than 5 characters"),
+  (req, res) => {
+    const valRes = validationResult(req);
+    const course = { id: courses.length + 1, ...req.body };
+    courses.push(course);
+    res.status(201).json(courses);
   }
-  courses.push(course);
-  res.status(201).json(courses);
-});
+);
 
 app.listen(5000, () => {
   console.log("app running on port:5000");
