@@ -29,18 +29,39 @@ app.get("/api/courses/:id", (req, res) => {
 
 app.post(
   "/api/courses",
-  body("title")
-    .notEmpty()
-    .withMessage("enter valid title")
-    .isLength({ min: 5 })
-    .withMessage("enter title with more than 5 characters"),
+  [
+    body("title")
+      .notEmpty()
+      .withMessage("enter valid title")
+      .isLength({ min: 5 })
+      .withMessage("enter title with more than 5 characters"),
+    body("price").notEmpty().withMessage("enter valid price"),
+  ],
   (req, res) => {
-    const valRes = validationResult(req);
-    const course = { id: courses.length + 1, ...req.body };
-    courses.push(course);
-    res.status(201).json(courses);
+    const error = validationResult(req);
+    if (error.isEmpty()) {
+      const course = { id: courses.length + 1, ...req.body };
+      courses.push(course);
+      res.status(201).json(courses);
+    } else {
+      return res.status(400).json({
+        message: error.array(),
+      });
+    }
   }
 );
+
+app.patch("/api/courses/:id", (req, res) => {
+  const id = +req.params.id;
+  const course = courses.find((c) => c.id === id);
+  if (course) {
+    course = { ...course, ...req.body };
+  } else {
+    return res.status(404).send({
+      message: "not found",
+    });
+  }
+});
 
 app.listen(5000, () => {
   console.log("app running on port:5000");
