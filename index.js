@@ -2,6 +2,8 @@ const express = require("express");
 
 const app = express();
 
+app.use(express.json());
+
 const courses = [
   { id: 1, title: "reactjs course", price: 650 },
   { id: 2, title: "mongo course", price: 350 },
@@ -21,6 +23,11 @@ app.get("/api/courses/:id", (req, res) => {
     });
   }
   res.status(200).json(course);
+});
+
+app.post("/api/courses", (req, res) => {
+  const course = { id: courses.length + 1, ...req.body };
+  console.log(course);
 });
 
 app.listen(5000, () => {
