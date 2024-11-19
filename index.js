@@ -27,7 +27,13 @@ app.get("/api/courses/:id", (req, res) => {
 
 app.post("/api/courses", (req, res) => {
   const course = { id: courses.length + 1, ...req.body };
-  console.log(course);
+  if (!course.title && !course.price) {
+    return res.status(400).json({
+      message: "title and price are required",
+    });
+  }
+  courses.push(course);
+  res.status(201).json(courses);
 });
 
 app.listen(5000, () => {
