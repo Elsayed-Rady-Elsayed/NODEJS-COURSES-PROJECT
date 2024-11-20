@@ -40,12 +40,18 @@ const addCourse = async (req, res) => {
 const updateCourse = async (req, res) => {
   const id = req.params.id;
   try {
+    // const updatedCourse = await course.updateOne(
+    //   { _id: id },
+    //   {
+    //     $set: { ...req.body },
+    //   }
+    // );
     const updatedCourse = await course.findByIdAndUpdate(id, {
       $set: req.body,
     });
-    res.status(200).json(updatedCourse);
+    return res.status(200).json(updatedCourse);
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       message: err,
     });
   }
@@ -62,19 +68,19 @@ const updateCourse = async (req, res) => {
 };
 
 const deletCourse = (req, res) => {
-  const id = +req.params.id;
-  const course = courses.find((c) => c.id === id);
-  if (!course) {
-    return res.status(404).json({
-      message: "not found",
-    });
-  }
-  courses = courses.filter((el) => {
-    return el.id !== id;
-  });
-  res.status(200).json({
-    message: "deleted successfully",
-  });
+  // const id = +req.params.id;
+  // const course = courses.find((c) => c.id === id);
+  // if (!course) {
+  //   return res.status(404).json({
+  //     message: "not found",
+  //   });
+  // }
+  // courses = courses.filter((el) => {
+  //   return el.id !== id;
+  // });
+  // res.status(200).json({
+  //   message: "deleted successfully",
+  // });
 };
 
 module.exports = {
