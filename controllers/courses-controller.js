@@ -2,6 +2,8 @@ const { validationResult } = require("express-validator");
 
 const { SUCCESS, FAIL, ERROR } = require("../utils/httpStatusText");
 
+const appError = require("../utils/appError");
+
 const course = require("../models/course_model");
 
 const getCourses = async (req, res) => {
