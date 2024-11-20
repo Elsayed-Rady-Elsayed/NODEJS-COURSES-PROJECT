@@ -1,10 +1,8 @@
 const express = require("express");
 
-let { courses } = require("./data/courses");
-
 const coursesController = require("./controllers/courses-controller");
 
-const { body, validationResult } = require("express-validator");
+const { body } = require("express-validator");
 
 const app = express();
 
