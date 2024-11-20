@@ -11,13 +11,17 @@ const getCourses = async (req, res) => {
 const getCourse = async (req, res) => {
   // const id = +req.params.id;
   // const course = courses.find((course) => course.id === id);
-  const findedCourse = await course.findById(req.params.id);
-  if (!course) {
-    return res.status(404).json({
-      message: "no courses found",
-    });
+  try {
+    const findedCourse = await course.findById(req.params.id);
+    if (!findedCourse) {
+      return res.status(404).json({
+        message: "no courses found",
+      });
+    }
+    return res.status(200).json(findedCourse);
+  } catch (err) {
+    return res.status(400).json({ message: "invalid id" });
   }
-  res.status(200).json(findedCourse);
 };
 
 const addCourse = async (req, res) => {
