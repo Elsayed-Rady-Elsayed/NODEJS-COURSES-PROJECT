@@ -36,7 +36,10 @@ app.all("*", (req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
-  res.status(error.statusCode).json({ status: ERROR, message: error.message });
+  res.status(error.statusCode || 500).json({
+    status: error.statusText || "Internal Server Error",
+    message: error.message || "Something went wrong",
+  });
 });
 
 app.listen(process.env.PORT || 5000, () => {
