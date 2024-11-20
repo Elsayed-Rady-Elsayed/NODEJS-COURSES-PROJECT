@@ -37,17 +37,28 @@ const addCourse = async (req, res) => {
   res.status(201).json(newCourse);
 };
 
-const updateCourse = (req, res) => {
-  const id = +req.params.id;
-  let course = courses.find((c) => c.id === id);
-  if (course) {
-    course = { ...course, ...req.body };
-    res.status(200).json(course);
-  } else {
-    return res.status(404).json({
-      message: "not found",
+const updateCourse = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const updatedCourse = await course.findByIdAndUpdate(id, {
+      $set: req.body,
+    });
+    res.status(200).json(updatedCourse);
+  } catch (err) {
+    res.status(400).json({
+      message: err,
     });
   }
+  // const id = +req.params.id;
+  // let course = courses.find((c) => c.id === id);
+  // if (course) {
+  //   course = { ...course, ...req.body };
+  //   res.status(200).json(course);
+  // } else {
+  //   return res.status(404).json({
+  //     message: "not found",
+  //   });
+  // }
 };
 
 const deletCourse = (req, res) => {
