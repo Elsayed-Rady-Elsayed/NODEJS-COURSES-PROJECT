@@ -10,6 +10,7 @@ const validationSchema = () => {
     body("price").notEmpty().withMessage("enter valid price"),
   ];
 };
+
 module.exports = {
   validationSchema,
 };

@@ -4,6 +4,7 @@ const { validationResult } = require("express-validator");
 const getCourses = (req, res) => {
   res.json(courses);
 };
+
 const getCourse = (req, res) => {
   const id = +req.params.id;
   const course = courses.find((course) => course.id === id);
@@ -14,6 +15,7 @@ const getCourse = (req, res) => {
   }
   res.status(200).json(course);
 };
+
 const addCourse = (req, res) => {
   const error = validationResult(req);
   if (error.isEmpty()) {
@@ -26,6 +28,7 @@ const addCourse = (req, res) => {
     });
   }
 };
+
 const updateCourse = (req, res) => {
   const id = +req.params.id;
   let course = courses.find((c) => c.id === id);
@@ -38,6 +41,7 @@ const updateCourse = (req, res) => {
     });
   }
 };
+
 const deletCourse = (req, res) => {
   const id = +req.params.id;
   const course = courses.find((c) => c.id === id);
@@ -53,6 +57,7 @@ const deletCourse = (req, res) => {
     message: "deleted successfully",
   });
 };
+
 module.exports = {
   getCourses,
   getCourse,
