@@ -1,7 +1,10 @@
-let { courses } = require("../data/courses");
+// let { courses } = require("../data/courses");
 const { validationResult } = require("express-validator");
 
-const getCourses = (req, res) => {
+const course = require("../models/course_model");
+
+const getCourses = async (req, res) => {
+  const courses = await course.find();
   res.json(courses);
 };
 
