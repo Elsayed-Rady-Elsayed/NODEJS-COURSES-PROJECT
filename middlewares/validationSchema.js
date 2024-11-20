@@ -3,11 +3,16 @@ const { body } = require("express-validator");
 const validationSchema = () => {
   return [
     body("title")
+      .trim()
       .notEmpty()
-      .withMessage("enter valid title")
+      .withMessage("The title field is required.")
       .isLength({ min: 5 })
-      .withMessage("enter title with more than 5 characters"),
-    body("price").notEmpty().withMessage("enter valid price"),
+      .withMessage("The title must be at least 5 characters long."),
+    body("price")
+      .notEmpty()
+      .withMessage("The price field is required.")
+      .isFloat({ gt: 0 })
+      .withMessage("The price must be a positive number."),
   ];
 };
 

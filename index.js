@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const url =
-  "mongodb+srv://sayedrady61:012301050180@courses.b9h82.mongodb.net/proj-2";
+  "mongodb+srv://sayedrady61:012301050180@courses.b9h82.mongodb.net/courses";
 
 mongoose
   .connect(url)

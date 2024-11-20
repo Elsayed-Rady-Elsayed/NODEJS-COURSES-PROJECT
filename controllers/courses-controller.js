@@ -8,28 +8,29 @@ const getCourses = async (req, res) => {
   res.json(courses);
 };
 
-const getCourse = (req, res) => {
-  const id = +req.params.id;
-  const course = courses.find((course) => course.id === id);
+const getCourse = async (req, res) => {
+  // const id = +req.params.id;
+  // const course = courses.find((course) => course.id === id);
+  const findedCourse = await course.findById(req.params.id);
   if (!course) {
     return res.status(404).json({
       message: "no courses found",
     });
   }
-  res.status(200).json(course);
+  res.status(200).json(findedCourse);
 };
 
-const addCourse = (req, res) => {
+const addCourse = async (req, res) => {
   const error = validationResult(req);
-  if (error.isEmpty()) {
-    const course = { id: courses.length + 1, ...req.body };
-    courses.push(course);
-    res.status(201).json(courses);
-  } else {
+  if (!error.isEmpty()) {
     return res.status(400).json({
       message: error.array(),
     });
   }
+  // const newCourse = courses.push(req.body);
+  const newCourse = new course(req.body);
+  await newCourse.save();
+  res.status(201).json(newCourse);
 };
 
 const updateCourse = (req, res) => {

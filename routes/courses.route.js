@@ -9,7 +9,7 @@ const router = express.Router();
 router
   .route("/")
   .get(coursesController.getCourses)
-  .post(validationSchema, coursesController.addCourse);
+  .post(validationSchema(), coursesController.addCourse);
 
 router
   .route("/:id")
