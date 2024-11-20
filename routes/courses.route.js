@@ -2,16 +2,16 @@ const express = require("express");
 
 const { body } = require("express-validator");
 
-const coursesController = require("./controllers/courses-controller");
+const coursesController = require("../controllers/courses-controller");
 
 const router = express.Router();
 
-router.get("/api/courses", coursesController.getCourses);
+router.get("/", coursesController.getCourses);
 
-router.get("/api/courses/:id", coursesController.getCourse);
+router.get("/:id", coursesController.getCourse);
 
 router.post(
-  "/api/courses",
+  "/",
   [
     body("title")
       .notEmpty()
@@ -23,10 +23,8 @@ router.post(
   coursesController.addCourse
 );
 
-router.patch("/api/courses/:id", coursesController.updateCourse);
+router.patch("/:id", coursesController.updateCourse);
 
-router.delete("/api/courses/:id", coursesController.deletCourse);
+router.delete("/:id", coursesController.deletCourse);
 
-module.exports = {
-  router,
-};
+module.exports = router;
