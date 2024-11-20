@@ -35,6 +35,10 @@ app.all("*", (req, res, next) => {
     .json({ status: ERROR, message: "this resourse is not available" });
 });
 
+app.use((error, req, res, next) => {
+  res.status(error.statusCode).json({ status: ERROR, message: error.message });
+});
+
 app.listen(process.env.PORT || 5000, () => {
   console.log("app running on port:5000");
 });
