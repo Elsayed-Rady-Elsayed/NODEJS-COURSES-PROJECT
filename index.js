@@ -1,9 +1,10 @@
+require("dotenv").config();
+
 const express = require("express");
 
 const mongoose = require("mongoose");
 
-const url =
-  "mongodb+srv://sayedrady61:012301050180@courses.b9h82.mongodb.net/courses";
+const url = process.env.MONGO_URL;
 
 mongoose
   .connect(url)
@@ -22,6 +23,6 @@ const coursesRouter = require("./routes/courses.route");
 
 app.use("/api/courses", coursesRouter);
 
-app.listen(5000, () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log("app running on port:5000");
 });
