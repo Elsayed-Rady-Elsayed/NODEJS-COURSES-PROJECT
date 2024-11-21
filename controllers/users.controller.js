@@ -1,7 +1,9 @@
 const asyncWrapper = require("../middlewares/asyncWrapper");
+const { findOne } = require("../models/course_model");
 
 const user = require("../models/user_model");
-const { SUCCESS } = require("../utils/httpStatusText");
+const appError = require("../utils/appError");
+const { SUCCESS, FAIL } = require("../utils/httpStatusText");
 
 const getAllUsers = asyncWrapper(async (req, res, next) => {
   const query = req.query;
@@ -12,7 +14,22 @@ const getAllUsers = asyncWrapper(async (req, res, next) => {
   res.json({ status: SUCCESS, data: { users } });
 });
 
-const register = () => {};
+const register = asyncWrapper(async (req, res, next) => {
+  const { firstName, lastName, email, password } = req.body;
+  const userFind = await user.findOne({ email: email });
+  if (userFind) {
+    const error = appError.create("this user already exist", 400, FAIL);
+    return next(error);
+  }
+  const newUser = new user({
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    password: password,
+  });
+  await newUser.save();
+  res.status(201).json({ status: SUCCESS, data: { newUser } });
+});
 
 const login = () => {};
 
