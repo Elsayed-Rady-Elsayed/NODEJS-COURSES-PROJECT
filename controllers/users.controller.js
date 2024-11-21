@@ -1,8 +1,11 @@
 const asyncWrapper = require("../middlewares/asyncWrapper");
-const { findOne } = require("../models/course_model");
+
+const bcrypt = require("bcrypt");
 
 const user = require("../models/user_model");
+
 const appError = require("../utils/appError");
+
 const { SUCCESS, FAIL } = require("../utils/httpStatusText");
 
 const getAllUsers = asyncWrapper(async (req, res, next) => {
@@ -10,7 +13,10 @@ const getAllUsers = asyncWrapper(async (req, res, next) => {
   const limit = query.limit || 10;
   const page = query.page || 1;
   const skip = (page - 1) * limit;
-  const users = await user.find({}, { __v: false }).limit(limit).skip(skip);
+  const users = await user
+    .find({}, { __v: false, password: false })
+    .limit(limit)
+    .skip(skip);
   res.json({ status: SUCCESS, data: { users } });
 });
 
@@ -21,11 +27,12 @@ const register = asyncWrapper(async (req, res, next) => {
     const error = appError.create("this user already exist", 400, FAIL);
     return next(error);
   }
+  const hashedPassword = await bcrypt.hash(password, 8);
   const newUser = new user({
     firstName: firstName,
     lastName: lastName,
     email: email,
-    password: password,
+    password: hashedPassword,
   });
   await newUser.save();
   res.status(201).json({ status: SUCCESS, data: { newUser } });
