@@ -38,7 +38,29 @@ const register = asyncWrapper(async (req, res, next) => {
   res.status(201).json({ status: SUCCESS, data: { newUser } });
 });
 
-const login = () => {};
+const login = asyncWrapper(async (req, res, next) => {
+  const { email, password } = req.body;
+  if (!email && !password) {
+    const error = appError.create("enter your email and password", 400, FAIL);
+    return next(error);
+  }
+  const findUser = await user.findOne({ email: email });
+  if (!findUser) {
+    const error = appError.create("user not found", 400, FAIL);
+    return next(error);
+  }
+  const matchedPassword = await bcrypt.compare(password, findUser.password);
+  if (!matchedPassword) {
+    const error = appError.create("password is wrong", 400, FAIL);
+    return next(error);
+  }
+  if (findUser && matchedPassword) {
+    res.status(201).json({ status: SUCCESS, data: { findUser } });
+  } else {
+    const error = appError.create("something went wrong", 400, FAIL);
+    return next(error);
+  }
+});
 
 module.exports = {
   getAllUsers,
