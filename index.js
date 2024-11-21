@@ -27,7 +27,11 @@ app.use(express.json());
 
 const coursesRouter = require("./routes/courses.route");
 
+const userRouter = require("./routes/user.route");
+
 app.use("/api/courses", coursesRouter);
+
+app.use("/api/users", userRouter);
 
 app.all("*", (req, res, next) => {
   return res

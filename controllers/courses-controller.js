@@ -5,6 +5,7 @@ const { SUCCESS, FAIL, ERROR } = require("../utils/httpStatusText");
 const appError = require("../utils/appError");
 
 const course = require("../models/course_model");
+
 const asyncWrapper = require("../middlewares/asyncWrapper");
 
 const getCourses = asyncWrapper(async (req, res, next) => {
