@@ -36,6 +36,7 @@ const register = asyncWrapper(async (req, res, next) => {
     email: email,
     password: hashedPassword,
     role: role,
+    avatar: req.file.filename,
   });
   newUser.token = await generateToken({
     email: newUser.email,
