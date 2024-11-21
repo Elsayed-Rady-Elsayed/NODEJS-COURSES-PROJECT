@@ -17,9 +17,20 @@ const diskStorage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: diskStorage });
+const fileFilter = function (req, file, cb) {
+  const image = file.mimetype.split("/")[0];
+  if (image === "image") {
+    return cb(null, true);
+  } else {
+    return cb(appError.create("not supported file type", 400, FAIL), false);
+  }
+};
+
+const upload = multer({ storage: diskStorage, fileFilter: fileFilter });
 
 const { verifyToken } = require("../middlewares/verifiyToken");
+const appError = require("../utils/appError");
+const { FAIL } = require("../utils/httpStatusText");
 
 router.route("/").get(verifyToken, userController.getAllUsers);
 
