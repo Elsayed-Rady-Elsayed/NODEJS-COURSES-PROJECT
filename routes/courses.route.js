@@ -6,15 +6,17 @@ const coursesController = require("../controllers/courses-controller");
 
 const router = express.Router();
 
+const { verifyToken } = require("../middlewares/verifiyToken");
+
 router
   .route("/")
   .get(coursesController.getCourses)
-  .post(validationSchema(), coursesController.addCourse);
+  .post(verifyToken, validationSchema(), coursesController.addCourse);
 
 router
   .route("/:id")
   .get(coursesController.getCourse)
   .patch(coursesController.updateCourse)
-  .delete(coursesController.deletCourse);
+  .delete(verifyToken, coursesController.deletCourse);
 
 module.exports = router;
