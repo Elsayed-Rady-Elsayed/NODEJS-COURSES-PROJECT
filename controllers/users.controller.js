@@ -8,8 +8,6 @@ const appError = require("../utils/appError");
 
 const { SUCCESS, FAIL } = require("../utils/httpStatusText");
 
-const jwt = require("jsonwebtoken");
-
 const generateToken = require("../utils/generateToken");
 
 const getAllUsers = asyncWrapper(async (req, res, next) => {

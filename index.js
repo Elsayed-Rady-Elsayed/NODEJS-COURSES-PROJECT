@@ -6,6 +6,8 @@ const cors = require("cors");
 
 const mongoose = require("mongoose");
 
+const path = require("path");
+
 const url = process.env.MONGO_URL;
 
 const { ERROR } = require("./utils/httpStatusText");
@@ -20,6 +22,8 @@ mongoose
   });
 
 const app = express();
+
+app.use("/uplodes", express.static(path.join(__dirname, "uplodes")));
 
 app.use(cors());
 
