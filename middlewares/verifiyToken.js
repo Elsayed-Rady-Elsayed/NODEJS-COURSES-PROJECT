@@ -12,6 +12,7 @@ const verifyToken = (req, res, next) => {
   const token = authToken.split(" ")[1];
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    req.currentUser = decodedToken;
     next();
   } catch (err) {
     const error = appError.create("error with token", 401, FAIL);

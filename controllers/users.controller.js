@@ -42,6 +42,7 @@ const register = asyncWrapper(async (req, res, next) => {
   newUser.token = await generateToken({
     email: newUser.email,
     id: newUser._id,
+    role: newUser.role,
   });
   await newUser.save();
   res.status(201).json({ status: SUCCESS, data: { newUser } });
@@ -67,6 +68,7 @@ const login = asyncWrapper(async (req, res, next) => {
     const token = await generateToken({
       email: findUser.email,
       id: findUser._id,
+      role: findUser.role,
     });
     res.status(201).json({ status: SUCCESS, data: { findUser } });
   } else {
