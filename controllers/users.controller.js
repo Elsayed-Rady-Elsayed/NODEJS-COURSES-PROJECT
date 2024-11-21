@@ -8,6 +8,10 @@ const appError = require("../utils/appError");
 
 const { SUCCESS, FAIL } = require("../utils/httpStatusText");
 
+const jwt = require("jsonwebtoken");
+
+const generateToken = require("../utils/generateToken");
+
 const getAllUsers = asyncWrapper(async (req, res, next) => {
   const query = req.query;
   const limit = query.limit || 10;
@@ -34,6 +38,10 @@ const register = asyncWrapper(async (req, res, next) => {
     email: email,
     password: hashedPassword,
   });
+  newUser.token = await generateToken({
+    email: newUser.email,
+    id: newUser._id,
+  });
   await newUser.save();
   res.status(201).json({ status: SUCCESS, data: { newUser } });
 });
@@ -55,6 +63,10 @@ const login = asyncWrapper(async (req, res, next) => {
     return next(error);
   }
   if (findUser && matchedPassword) {
+    const token = await generateToken({
+      email: findUser.email,
+      id: findUser._id,
+    });
     res.status(201).json({ status: SUCCESS, data: { findUser } });
   } else {
     const error = appError.create("something went wrong", 400, FAIL);
