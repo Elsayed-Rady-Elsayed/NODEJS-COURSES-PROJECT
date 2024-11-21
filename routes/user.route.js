@@ -17,7 +17,7 @@ const diskStorage = multer.diskStorage({
   },
 });
 
-const fileFilter = function (req, file, cb) {
+const fileFilterFun = function (req, file, cb) {
   const image = file.mimetype.split("/")[0];
   if (image === "image") {
     return cb(null, true);
@@ -26,7 +26,7 @@ const fileFilter = function (req, file, cb) {
   }
 };
 
-const upload = multer({ storage: diskStorage, fileFilter: fileFilter });
+const upload = multer({ storage: diskStorage, fileFilter: fileFilterFun });
 
 const { verifyToken } = require("../middlewares/verifiyToken");
 const appError = require("../utils/appError");
