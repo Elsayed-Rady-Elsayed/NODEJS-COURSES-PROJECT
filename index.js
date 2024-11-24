@@ -37,6 +37,8 @@ app.use("/api/courses", coursesRouter);
 
 app.use("/api/users", userRouter);
 
+//prepar for deployment
+
 app.all("*", (req, res, next) => {
   return res
     .status(404)
